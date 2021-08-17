@@ -5,9 +5,13 @@
                 <div class="input-wrapper">
                     <label for="username">아이디</label>
                     <InputText id="username" type="text" v-model="username" placeholder="user@whiteboard.com" />
+                    
                     <label for="password">비밀번호</label>
                     <Password id="password" :feedback="false" v-model="password" placeholder="비밀번호를 입력해주세요" />
-                    <Button label="로그인" />
+                    
+                    <router-link class="button-submit" :to="{ name: this.$route.name }">
+                        로그인
+                    </router-link>
                 </div>
             </template>
         </Card>
@@ -67,13 +71,20 @@ export default {
             box-shadow none
             border-color black
 
-    button
+    .button-submit
+        height 2.7em
+        display flex
+        align-items center
+        justify-content center
         margin-top 1em
         border-radius 2rem
         background-color black
+        color white
         font-size 1.15em
+        text-decoration none
 
         &:hover, &:enabled:focus
+            text-decoration none
             background-color #62636b
 
 </style>

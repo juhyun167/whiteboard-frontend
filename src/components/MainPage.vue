@@ -16,7 +16,9 @@
             <img src="../assets/scrum-board.svg">
         </div>
         <div class="col">
-            <component :is="currentForm"></component>
+            <keep-alive>
+                <component :is="currentForm"></component>
+            </keep-alive>
         </div>
     </div>
 </template>
