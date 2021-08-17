@@ -1,10 +1,12 @@
 <template>
+    <Toast />
+
     <div class="footer-wrapper">
         <div class="text-wrapper">
             <div class="text-1">
-                <router-link to="/">개인정보처리방침</router-link>
+                <router-link :to="{ name: this.$route.name }" @click.prevent="showNotImplemented()" >개인정보처리방침</router-link>
                 &nbsp;&nbsp;&nbsp;
-                <router-link to="/">이용약관</router-link>
+                <router-link :to="{ name: this.$route.name }" @click.prevent="showNotImplemented()" >이용약관</router-link>
             </div>
             <div class="text-2">
                 이메일: whiteboard@gmail.com
@@ -15,6 +17,26 @@
         </div>
     </div>
 </template>
+
+<script>
+import Toast from 'primevue/toast'
+
+export default {
+    components: {
+        Toast,
+    },
+    methods: {
+        showNotImplemented() {
+            this.$toast.add({ 
+                severity: 'info',
+                summary: '준비중입니다',
+                detail: '이용에 불편을 드려 죄송합니다.',
+                life: 1500
+            })
+        }
+    }
+}
+</script>
 
 <style scoped lang="stylus">
 .footer-wrapper
