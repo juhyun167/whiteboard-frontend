@@ -4,10 +4,10 @@
             <template #content>
                 <div class="input-wrapper">
                     <label for="username">아이디</label>
-                    <InputText id="username" type="text" v-model="username" placeholder="user@whiteboard.com" />
+                    <InputText id="username" type="text" v-model="state.username" placeholder="user@whiteboard.com" />
                     
                     <label for="password">비밀번호</label>
-                    <Password id="password" :feedback="false" v-model="password" placeholder="비밀번호를 입력해주세요" />
+                    <Password id="password" :feedback="false" v-model="state.password" placeholder="비밀번호를 입력해주세요" />
                     
                     <router-link class="button-submit" :to="{ name: this.$route.name }">
                         로그인
@@ -19,6 +19,7 @@
 </template>
 
 <script>
+import { reactive } from 'vue'
 import Button from 'primevue/button'
 import Card from 'primevue/card'
 import InputText from 'primevue/inputtext'
@@ -31,12 +32,16 @@ export default {
         InputText,
         Password,
     },
-    data() {
-        return {
+    setup() {
+        const state = reactive({
             username: '',
             password: ''
+        })
+
+        return {
+            state,
         }
-    }
+    },
 }
 </script>
 
@@ -72,7 +77,7 @@ export default {
             border-color black
 
     .button-submit
-        height 2.7em
+        height 3em
         display flex
         align-items center
         justify-content center

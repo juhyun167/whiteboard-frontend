@@ -4,22 +4,22 @@
             <template #content>
                 <div class="input-wrapper">
                     <label for="displayname">이름</label>
-                    <InputText id="displayname" type="text" v-model="displayName" placeholder="이름을 입력해주세요" />
+                    <InputText id="displayname" type="text" v-model="state.displayName" placeholder="이름을 입력해주세요" />
                     
                     <label for="username">아이디</label>
-                    <InputText id="username" type="text" v-model="username" placeholder="user@whiteboard.com" />
+                    <InputText id="username" type="text" v-model="state.username" placeholder="user@whiteboard.com" />
                     
                     <label for="password">비밀번호</label>
-                    <Password id="password" :feedback="false" v-model="password" placeholder="비밀번호를 입력해주세요" />
+                    <Password id="password" :feedback="false" v-model="state.password" placeholder="비밀번호를 입력해주세요" />
                     
                     <label for="password-confirm">비밀번호 확인</label>
-                    <div v-if="passwordConfirmChecked === true" class="form-check-message form-check-success">
+                    <div v-if="state.check.passwordConfirm === true" class="form-check-message form-check-success">
                         비밀번호가 일치합니다.
                     </div>
-                    <div v-else-if="passwordConfirmChecked === false" class="form-check-message form-check-error">
+                    <div v-else-if="state.check.passwordConfirm === false" class="form-check-message form-check-error">
                         비밀번호가 일치하지 않습니다.
                     </div>
-                    <Password id="password-confirm" :feedback="false" v-model="passwordConfirm" placeholder="비밀번호를 한번 더 입력해주세요" />
+                    <Password id="password-confirm" :feedback="false" v-model="state.passwordConfirm" placeholder="비밀번호를 한번 더 입력해주세요" />
                     
                     <router-link class="button-submit" :to="{ name: this.$route.name }">
                         회원가입
@@ -31,11 +31,11 @@
 </template>
 
 <script>
+import { reactive, watch } from 'vue'
 import Button from 'primevue/button'
 import Card from 'primevue/card'
 import InputText from 'primevue/inputtext'
 import Password from 'primevue/password'
-
 import _ from 'lodash'
 
 export default {
@@ -45,37 +45,46 @@ export default {
         InputText,
         Password,
     },
-    data() {
-        return {
+    setup() {
+        const state = reactive({
             displayName: '',
             username: '',
             password: '',
             passwordConfirm: '',
 
             // for form check
-            displayNameChecked: undefined,
-            usernameChecked: undefined,
-            passwordChecked: undefined,
-            passwordConfirmChecked: undefined,
+            check: {
+                displayName: 'undefined',
+                username: 'undefined',
+                password: 'undefined',
+                passwordConfirm: 'undefined'
+            }
+        })
+
+        const checkPasswordConfirm = () => {
+            state.check.passwordConfirm = state.password === state.passwordConfirm
+        }
+
+        const debouncedCheckPasswordConfirm = _.debounce(checkPasswordConfirm, 500)
+
+        watch(
+            () => state.password,
+            (password, prevPassword) => {
+                debouncedCheckPasswordConfirm()
+            }
+        )
+
+        watch(
+            () => state.passwordConfirm,
+            (passwordConfirm, prevPasswordConfirm) => {
+                debouncedCheckPasswordConfirm()
+            }
+        )
+
+        return {
+            state,
         }
     },
-    watch: {
-        password: function (newVal) {
-            this.debouncedCheckPasswordConfirm()
-        },
-        passwordConfirm: function (newVal) {
-            this.debouncedCheckPasswordConfirm()
-        }
-    },
-    created() {
-        this.debouncedCheckPasswordConfirm = _.debounce(this.checkPasswordConfirm, 500)
-    },
-    methods: {
-        checkPasswordConfirm() {
-            this.passwordConfirmChecked = (this.password === this.passwordConfirm)
-            console.log(this.passwordConfirmChecked)
-        }
-    }
 }
 </script>
 
@@ -111,7 +120,7 @@ export default {
             border-color black
 
     .button-submit
-        height 2.7em
+        height 3em
         display flex
         align-items center
         justify-content center

@@ -13,7 +13,7 @@
             </div>
         </div>
         <div class="col">
-            <img src="../assets/scrum-board.svg">
+            <img src="../assets/images/scrum-board.svg">
         </div>
         <div class="col">
             <keep-alive>
