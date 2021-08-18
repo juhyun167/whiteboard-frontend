@@ -4,10 +4,19 @@
             <template #content>
                 <div class="input-wrapper">
                     <label for="username">아이디</label>
-                    <InputText id="username" type="text" v-model="state.username" placeholder="user@whiteboard.com" />
+                    <InputText 
+                        id="username" 
+                        type="text" 
+                        v-model="state.username" 
+                        placeholder="아이디를 입력해주세요" 
+                    />
                     
                     <label for="password">비밀번호</label>
-                    <Password id="password" :feedback="false" v-model="state.password" placeholder="비밀번호를 입력해주세요" />
+                    <Password id="password" 
+                        :feedback="false" 
+                        v-model="state.password" 
+                        placeholder="비밀번호를 입력해주세요" 
+                    />
                     
                     <router-link class="button-submit" :to="{ name: this.$route.name }">
                         로그인
