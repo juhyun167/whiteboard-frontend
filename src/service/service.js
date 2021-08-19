@@ -1,26 +1,44 @@
 import axios from 'axios'
 
 const axiosInstance = axios.create({
-    baseURL: 'http://localhost:4000'
+    timeout: 1000,
 })
 
-const login = async (username, password) => {
+const handleResponse = (response) => {
+    return {
+        success: true,
+        status: response.status,
+        statusText: response.statusText,
+    }
+}
+
+const handleError = (error) => {
+    let result = { success: false }
+    if (error.response) {
+        result.status = error.response.status
+        result.statusText = error.response.statusText
+    }
+    return result
+}
+
+const login = (username, password) => {
 
 }
 
-const logout = async () => {
+const logout = () => {
 
 }
 
 const register = async (displayName, username, password) => {
     try {
-        return await axiosInstance.post('/api/user', {
+        const response = await axiosInstance.post('/api/user', {
             displayName,
             username,
             password
         })
+        return handleResponse(response)
     } catch (error) {
-        return Promise.reject(error)
+        return handleError(error)
     }
 }
 

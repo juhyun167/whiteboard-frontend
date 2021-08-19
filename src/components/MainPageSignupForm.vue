@@ -1,4 +1,6 @@
 <template>
+    <Toast />
+
     <div class="form-wrapper">
         <Card class="shadow-7">
             <template #content>
@@ -64,10 +66,13 @@
 
 <script>
 import { reactive, watch } from 'vue'
+import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
 import Card from 'primevue/card'
 import InputText from 'primevue/inputtext'
 import Password from 'primevue/password'
+import Toast from 'primevue/toast'
+import { useToast } from 'primevue/usetoast'
 import _ from 'lodash'
 
 export default {
@@ -75,6 +80,7 @@ export default {
         Card,
         InputText,
         Password,
+        Toast,
     },
     setup() {
         const data = reactive({
@@ -93,13 +99,31 @@ export default {
         })
 
         const store = useStore()
+        const router = useRouter()
+        const toast = useToast()
 
-        const register = () => {
-            store.dispatch('register', {
+        const register = async () => {
+            const response = await store.dispatch('register', {
                 'displayName': data.displayName,
                 'username': data.username,
                 'password': data.password
             })
+            if (response.success) {
+                toast.add({ 
+                    severity: 'success',
+                    summary: '회원가입이 완료되었습니다.',
+                    detail: '로그인하여 화이트보드를 둘러보세요!',
+                    life: 2000
+                })
+                router.push({ name: 'main' })
+            } else {
+                toast.add({ 
+                    severity: 'error',
+                    summary: '회원가입에 실패했습니다.',
+                    detail: '이용에 불편을 드려 죄송합니다.',
+                    life: 2000
+                })
+            }
         }
 
         const checkDisplayName = () => {

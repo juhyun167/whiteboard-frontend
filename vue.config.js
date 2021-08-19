@@ -1,14 +1,11 @@
 module.exports = {
-    //configureWebpack: {
-		//module: {
-			//rules: [
-				//{
-					//test: /\.styl$/,
-					//loader: "stylus-loader", // compiles Styl to CSS
-				//},
-			//],
-		//},	
-	//},
+    runtimeCompiler: true,
 
-    runtimeCompiler: true
+	devServer: {
+		proxy: {
+			'/api': {
+				target: 'http://localhost:4000',
+			}
+		}
+	},
 }

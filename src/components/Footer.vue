@@ -32,9 +32,9 @@ export default {
         const showNotImplemented = () => {
             toast.add({ 
                 severity: 'info',
-                summary: '준비중입니다',
+                summary: '준비중입니다.',
                 detail: '이용에 불편을 드려 죄송합니다.',
-                life: 1500
+                life: 2000
             })
         }
         

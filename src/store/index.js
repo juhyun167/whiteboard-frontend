@@ -21,14 +21,8 @@ export default createStore({
             // service.logout()
             commit('LOG_OUT')
         },
-        register({ commit }, { displayName, username, password }) {
-            service.register(displayName, username, password)
-                .then((response) => {
-                    console.log(response)
-                })
-                .catch((error) => {
-                    console.log(error)
-                })
+        async register({ commit }, { displayName, username, password }) {
+            return await service.register(displayName, username, password)
         }
     },
     modules: {
