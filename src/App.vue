@@ -25,14 +25,14 @@ export default {
 <style>
 @font-face {
     font-family: 'Noto Sans KR';
-    src: url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap');
+    src: url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap') format('woff');
     font-style: normal;
 }
 
 /* We use Inter for numbers and english fonts */
 @font-face {
     font-family: 'Noto Sans KR';
-    src: url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+    src: url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap') format('woff');
     unicode-range: U+0020-007E;
     font-style: normal;
 }

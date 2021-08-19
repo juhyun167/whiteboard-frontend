@@ -24,8 +24,8 @@
 </template>
 
 <script>
-import MainPageLoginForm from './MainPageLoginForm.vue'
-import MainPageSignupForm from './MainPageSignupForm.vue'
+import MainPageLoginForm from '@/components/MainPageLoginForm.vue'
+import MainPageSignupForm from '@/components/MainPageSignupForm.vue'
 
 export default {
     props: {

@@ -4,58 +4,58 @@
             <template #content>
                 <div class="input-wrapper">
                     <label for="displayname">이름</label>
-                    <div v-if="state.check.displayName === false" class="form-check-message form-check-error">
+                    <div v-if="data.check.displayName === false" class="form-check-message form-check-error">
                         이름 형식을 다시 한번 확인해주세요.
                     </div>
                     <InputText
                         id="displayname"
                         type="text"
-                        v-model="state.displayName"
+                        v-model="data.displayName"
                         placeholder="이름을 입력해주세요"
                         v-tooltip.bottom.focus="'이름은 2~16자이고, 특수문자를 사용할 수 없습니다'"
                     />
                     
                     <label for="username">아이디</label>
-                    <div v-if="state.check.username === false" class="form-check-message form-check-error">
+                    <div v-if="data.check.username === false" class="form-check-message form-check-error">
                         아이디 형식을 다시 한번 확인해주세요.
                     </div>
                     <InputText 
                         id="username"
                         type="text"
-                        v-model="state.username"
+                        v-model="data.username"
                         placeholder="아이디를 입력해주세요"
                         v-tooltip.bottom.focus="'아이디는 6~20자의 영문과 숫자, _만 가능합니다'"
                     />
                     
                     <label for="password">비밀번호</label>
-                    <div v-if="state.check.password === false" class="form-check-message form-check-error">
+                    <div v-if="data.check.password === false" class="form-check-message form-check-error">
                         비밀번호 형식을 다시 한번 확인해주세요.
                     </div>
                     <Password 
                         id="password" 
                         :feedback="false" 
-                        v-model="state.password" 
+                        v-model="data.password" 
                         placeholder="비밀번호를 입력해주세요"
                         v-tooltip.bottom.focus="'비밀번호는 6~20자입니다'"
                     />
                     
                     <label for="password-confirm">비밀번호 확인</label>
-                    <div v-if="state.check.passwordConfirm === true" class="form-check-message form-check-success">
+                    <div v-if="data.check.passwordConfirm === true" class="form-check-message form-check-success">
                         비밀번호가 일치합니다.
                     </div>
-                    <div v-else-if="state.check.passwordConfirm === false" class="form-check-message form-check-error">
+                    <div v-else-if="data.check.passwordConfirm === false" class="form-check-message form-check-error">
                         비밀번호가 일치하지 않습니다.
                     </div>
                     <Password 
                         id="password-confirm" 
                         :feedback="false" 
-                        v-model="state.passwordConfirm" 
+                        v-model="data.passwordConfirm" 
                         placeholder="비밀번호를 한번 더 입력해주세요" 
                     />
                     
-                    <router-link class="button-submit" :to="{ name: this.$route.name }">
+                    <a class="button-submit" @click.prevent="register">
                         회원가입
-                    </router-link>
+                    </a>
                 </div>
             </template>
         </Card>
@@ -64,7 +64,7 @@
 
 <script>
 import { reactive, watch } from 'vue'
-import Button from 'primevue/button'
+import { useStore } from 'vuex'
 import Card from 'primevue/card'
 import InputText from 'primevue/inputtext'
 import Password from 'primevue/password'
@@ -72,13 +72,12 @@ import _ from 'lodash'
 
 export default {
     components: {
-        Button,
         Card,
         InputText,
         Password,
     },
     setup() {
-        const state = reactive({
+        const data = reactive({
             displayName: '',
             username: '',
             password: '',
@@ -93,27 +92,37 @@ export default {
             }
         })
 
+        const store = useStore()
+
+        const register = () => {
+            store.dispatch('register', {
+                'displayName': data.displayName,
+                'username': data.username,
+                'password': data.password
+            })
+        }
+
         const checkDisplayName = () => {
-            state.check.displayName = (
-                (state.displayName === '') ||
-                (2 <= state.displayName.length) && (state.displayName.length <= 16)
-                    && !(/<|>/).test(state.displayName)
+            data.check.displayName = (
+                (data.displayName === '') ||
+                (2 <= data.displayName.length) && (data.displayName.length <= 16)
+                    && !(/<|>/).test(data.displayName)
             )
         }
         const checkUsername = () => {
-            state.check.username = (
-                (state.username === '') ||
-                (6 <= state.username.length) && (state.username.length <= 20)
-                    && /^[a-zA-Z0-9_]+$/.test(state.username)
+            data.check.username = (
+                (data.username === '') ||
+                (6 <= data.username.length) && (data.username.length <= 20)
+                    && /^[a-zA-Z0-9_]+$/.test(data.username)
             )
         }
         const checkPassword = () => {
-            state.check.password = 
-                (state.password === '') ||
-                (6 <= state.password.length) && (state.password.length <= 20)
+            data.check.password = 
+                (data.password === '') ||
+                (6 <= data.password.length) && (data.password.length <= 20)
         }
         const checkPasswordConfirm = () => {
-            state.check.passwordConfirm = state.password === state.passwordConfirm
+            data.check.passwordConfirm = data.password === data.passwordConfirm
         }
 
         const debouncedCheckDisplayName = _.debounce(checkDisplayName, 500)
@@ -122,33 +131,34 @@ export default {
         const debouncedCheckPasswordConfirm = _.debounce(checkPasswordConfirm, 500)
 
         watch(
-            () => state.displayName,
+            () => data.displayName,
             (displayName, prevDisplayName) => {
                 debouncedCheckDisplayName()
             }
         )
         watch(
-            () => state.username,
+            () => data.username,
             (username, prevUsername) => {
                 debouncedCheckUsername()
             }
         )
         watch(
-            () => state.password,
+            () => data.password,
             (password, prevPassword) => {
                 debouncedCheckPassword()
                 debouncedCheckPasswordConfirm()
             }
         )
         watch(
-            () => state.passwordConfirm,
+            () => data.passwordConfirm,
             (passwordConfirm, prevPasswordConfirm) => {
                 debouncedCheckPasswordConfirm()
             }
         )
 
         return {
-            state,
+            data,
+            register
         }
     },
 }

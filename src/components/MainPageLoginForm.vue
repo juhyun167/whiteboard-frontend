@@ -7,20 +7,20 @@
                     <InputText 
                         id="username" 
                         type="text" 
-                        v-model="state.username" 
+                        v-model="data.username" 
                         placeholder="아이디를 입력해주세요" 
                     />
                     
                     <label for="password">비밀번호</label>
                     <Password id="password" 
                         :feedback="false" 
-                        v-model="state.password" 
+                        v-model="data.password" 
                         placeholder="비밀번호를 입력해주세요" 
                     />
                     
-                    <router-link class="button-submit" :to="{ name: this.$route.name }">
+                    <a class="button-submit" :to="{ name: this.$route.name }">
                         로그인
-                    </router-link>
+                    </a>
                 </div>
             </template>
         </Card>
@@ -29,26 +29,24 @@
 
 <script>
 import { reactive } from 'vue'
-import Button from 'primevue/button'
 import Card from 'primevue/card'
 import InputText from 'primevue/inputtext'
 import Password from 'primevue/password'
 
 export default {
     components: {
-        Button,
         Card,
         InputText,
         Password,
     },
     setup() {
-        const state = reactive({
+        const data = reactive({
             username: '',
             password: ''
         })
 
         return {
-            state,
+            data,
         }
     },
 }

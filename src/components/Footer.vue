@@ -20,21 +20,28 @@
 
 <script>
 import Toast from 'primevue/toast'
+import { useToast } from 'primevue/usetoast'
 
 export default {
     components: {
         Toast,
     },
-    methods: {
-        showNotImplemented() {
-            this.$toast.add({ 
+    setup() {
+        const toast = useToast()
+
+        const showNotImplemented = () => {
+            toast.add({ 
                 severity: 'info',
                 summary: '준비중입니다',
                 detail: '이용에 불편을 드려 죄송합니다.',
                 life: 1500
             })
         }
-    }
+        
+        return {
+            showNotImplemented,
+        }
+    },
 }
 </script>
 
