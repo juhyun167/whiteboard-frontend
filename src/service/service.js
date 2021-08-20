@@ -9,6 +9,7 @@ const handleResponse = (response) => {
         success: true,
         status: response.status,
         statusText: response.statusText,
+        data: response.data
     }
 }
 
@@ -17,12 +18,21 @@ const handleError = (error) => {
     if (error.response) {
         result.status = error.response.status
         result.statusText = error.response.statusText
+        result.data = error.response.data
     }
     return result
 }
 
-const login = (username, password) => {
-
+const login = async (username, password) => {
+    try {
+        const response = await axiosInstance.post('/api/auth/login', {
+            username,
+            password
+        })
+        return handleResponse(response)
+    } catch (error) {
+        return handleError(error)
+    }
 }
 
 const logout = () => {

@@ -1,4 +1,6 @@
 <template>
+    <Toast />
+
     <div class="form-wrapper">
         <Card class="shadow-7">
             <template #content>
@@ -18,7 +20,7 @@
                         placeholder="비밀번호를 입력해주세요" 
                     />
                     
-                    <a class="button-submit" :to="{ name: this.$route.name }">
+                    <a class="button-submit" @click.prevent="login">
                         로그인
                     </a>
                 </div>
@@ -29,15 +31,20 @@
 
 <script>
 import { reactive } from 'vue'
+import { useRouter } from 'vue-router'
+import { useStore } from 'vuex'
 import Card from 'primevue/card'
 import InputText from 'primevue/inputtext'
 import Password from 'primevue/password'
+import Toast from 'primevue/toast'
+import { useToast } from 'primevue/usetoast'
 
 export default {
     components: {
         Card,
         InputText,
         Password,
+        Toast,
     },
     setup() {
         const data = reactive({
@@ -45,8 +52,45 @@ export default {
             password: ''
         })
 
+        const store = useStore()
+        const router = useRouter()
+        const toast = useToast()
+
+        const login = async () => {
+            const result = await store.dispatch('login', {
+                username: data.username,
+                password: data.password,
+            })
+            console.log(result)
+
+            if (result.success) {
+                
+            } else {
+                let errorMessage = ''
+
+                if (result.status) {
+                    if (result.status < 500) {
+                        errorMessage = '아이디와 비밀번호를 다시 한번 확인해주세요.'
+                    }
+                    else {
+                        errorMessage = '화이트보드 서버에서 오류가 발생했습니다. 잠시 후 다시 시도해주세요.'
+                    }
+                } else {
+                    errorMessage = '로그인 요청이 전송되지 못했습니다. 인터넷 상태를 확인해주세요.'
+                }
+                toast.add({ 
+                    severity: 'error',
+                    summary: '로그인에 실패했습니다.',
+                    detail: errorMessage,
+                    life: 2000,
+                    closable: false
+                })
+            }
+        }
+
         return {
             data,
+            login,
         }
     },
 }

@@ -103,25 +103,40 @@ export default {
         const toast = useToast()
 
         const register = async () => {
-            const response = await store.dispatch('register', {
-                'displayName': data.displayName,
-                'username': data.username,
-                'password': data.password
+            const result = await store.dispatch('register', {
+                displayName: data.displayName,
+                username: data.username,
+                password: data.password,
             })
-            if (response.success) {
+            
+            if (result.success) {
                 toast.add({ 
                     severity: 'success',
                     summary: '회원가입이 완료되었습니다.',
                     detail: '로그인하여 화이트보드를 둘러보세요!',
-                    life: 2000
+                    life: 2000,
+                    closable: false
                 })
                 router.push({ name: 'main' })
             } else {
+                let errorMessage = ''
+
+                if (result.status) {
+                    if (result.status < 500) {
+                        errorMessage = '이름, 아이디와 비밀번호 형식을 다시 한번 확인해주세요.'
+                    }
+                    else {
+                        errorMessage = '화이트보드 서버에서 오류가 발생했습니다. 잠시 후 다시 시도해주세요.'
+                    }
+                } else {
+                    errorMessage = '회원가입 요청이 전송되지 못했습니다. 인터넷 상태를 확인해주세요.'
+                }
                 toast.add({ 
                     severity: 'error',
                     summary: '회원가입에 실패했습니다.',
-                    detail: '이용에 불편을 드려 죄송합니다.',
-                    life: 2000
+                    detail: errorMessage,
+                    life: 2000,
+                    closable: false
                 })
             }
         }
@@ -182,7 +197,7 @@ export default {
 
         return {
             data,
-            register
+            register,
         }
     },
 }

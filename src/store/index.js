@@ -1,24 +1,29 @@
 import { createStore } from 'vuex'
+import createPersistedState from 'vuex-persistedstate'
 import { service } from '@/service/service'
 
 export default createStore({
     state: {
         authenticated: false,
-        displayName: ''
+        displayName: '',
     },
     mutations: {
         LOG_IN(state, payload) {
             state.authenticated = true
             state.displayName = payload.displayName
         },
-        LOG_OUT(state, payload) {
+        LOG_OUT(state) {
             state.authenticated = false
             state.displayName = ''
         }
     },
     actions: {
-        login({ commit }, { username, password }) {
-            // service.login(username, password)
+        async login({ commit }, { username, password }) {
+            const result = await service.login(username, password)
+            if (result.success) {
+                commit('LOG_IN', { displayName: result.body.displayName })
+            }
+            return result
         },
         logout({ commit }) {
             // service.logout()
@@ -29,5 +34,8 @@ export default createStore({
         }
     },
     modules: {
-    }
+    },
+    plugins: [
+        createPersistedState(),
+    ]
 })
