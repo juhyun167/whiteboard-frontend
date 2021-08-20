@@ -21,13 +21,16 @@ export default createStore({
         async login({ commit }, { username, password }) {
             const result = await service.login(username, password)
             if (result.success) {
-                commit('LOG_IN', { displayName: result.body.displayName })
+                commit('LOG_IN', { displayName: result.data.displayName })
             }
             return result
         },
-        logout({ commit }) {
-            // service.logout()
-            commit('LOG_OUT')
+        async logout({ commit }) {
+            const result = await service.logout()
+            if (result.success) {
+                commit('LOG_OUT')
+            }
+            return result
         },
         async register({ commit }, { displayName, username, password }) {
             return await service.register(displayName, username, password)

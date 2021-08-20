@@ -2,6 +2,7 @@ import axios from 'axios'
 
 const axiosInstance = axios.create({
     timeout: 1000,
+    withCredentials: true,
 })
 
 const handleResponse = (response) => {
@@ -35,8 +36,13 @@ const login = async (username, password) => {
     }
 }
 
-const logout = () => {
-
+const logout = async () => {
+    try {
+        const response = await axiosInstance.post('/api/auth/logout')
+        return handleResponse(response)
+    } catch (error) {
+        return handleError(error)
+    }
 }
 
 const register = async (displayName, username, password) => {

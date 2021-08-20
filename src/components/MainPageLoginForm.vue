@@ -64,7 +64,7 @@ export default {
             console.log(result)
 
             if (result.success) {
-                
+                router.push({ name: 'home' })
             } else {
                 let errorMessage = ''
 
