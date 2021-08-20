@@ -74,7 +74,6 @@ export default {
         border none
         border-bottom 1px solid #d0d2d9
         border-radius 0
-        font-family "Noto Sans KR", sans-serif
         
         ::placeholder
             color #d0d2d9
@@ -98,5 +97,6 @@ export default {
         &:hover, &:enabled:focus
             text-decoration none
             background-color #62636b
+            cursor pointer
 
 </style>

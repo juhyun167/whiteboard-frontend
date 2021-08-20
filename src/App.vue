@@ -23,19 +23,8 @@ export default {
 </script>
 
 <style>
-@font-face {
-    font-family: 'Noto Sans KR';
-    src: url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap') format('woff');
-    font-style: normal;
-}
-
-/* We use Inter for numbers and english fonts */
-@font-face {
-    font-family: 'Noto Sans KR';
-    src: url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap') format('woff');
-    unicode-range: U+0020-007E;
-    font-style: normal;
-}
+@import url('./assets/styles/pretendard.css');
+@import url('./assets/styles/pretendard-subset.css');
 
 html, body {
     height: 100%;
@@ -47,13 +36,17 @@ html, body {
     height: 100%;
     display: flex;
     flex-flow: column;
-    font-family: "Noto Sans KR", sans-serif;
+    font-family: "Pretendard", sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
 
 .content {
     flex: auto;
+}
+
+.p-component {
+    font-family: "Pretendard", sans-serif !important;
 }
 
 </style>

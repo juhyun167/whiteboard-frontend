@@ -56,12 +56,12 @@ export default {
             width 80%
 
             .title
-                font-size 2.8rem
+                font-size 3.2rem
                 font-weight 700
 
             .subtitle
                 margin-top .5em
-                font-size 1.7rem
+                font-size 2rem
                 font-color #62636b
 
     .col:nth-of-type(2)

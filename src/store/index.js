@@ -4,13 +4,16 @@ import { service } from '@/service/service'
 export default createStore({
     state: {
         authenticated: false,
+        displayName: ''
     },
     mutations: {
-        LOG_IN(state) {
+        LOG_IN(state, payload) {
             state.authenticated = true
+            state.displayName = payload.displayName
         },
-        LOG_OUT(state) {
+        LOG_OUT(state, payload) {
             state.authenticated = false
+            state.displayName = ''
         }
     },
     actions: {
