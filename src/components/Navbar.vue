@@ -4,7 +4,7 @@
     <Toolbar flex align-items-center>
         <template #left>
             <router-link :to="{ name: 'main' }">
-                <img id="logo" src="../assets/images/logo.png">
+                <img id="logo" src="../assets/images/logo.png" alt="logo">
             </router-link>
         </template>
 

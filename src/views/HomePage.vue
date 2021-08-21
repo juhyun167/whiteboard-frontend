@@ -33,14 +33,14 @@ export default {
         margin 0
         padding 0
         padding-top 1.5em
+        padding-bottom 4em
 
 .sidebar
     width 250px
-    background-color orange
     
 .homepage-content
     background-color #dce0e380
     padding-top 2.5em !important
     padding-left 3em !important
-    padding-rght 3em !important
+    padding-right 3em !important
 </style>

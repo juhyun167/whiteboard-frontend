@@ -13,7 +13,7 @@
             </div>
         </div>
         <div class="col">
-            <img src="../assets/images/scrum-board.svg">
+            <img src="../assets/images/scrum-board.svg" alt="scrum-board-illust">
         </div>
         <div class="col">
             <keep-alive>
@@ -56,12 +56,12 @@ export default {
             width 80%
 
             .title
-                font-size 3.2rem
-                font-weight 700
+                font-size 3.5vw
+                font-weight bolder
 
             .subtitle
                 margin-top .5em
-                font-size 2rem
+                font-size 2.4vw
                 font-color #62636b
 
     .col:nth-of-type(2)
