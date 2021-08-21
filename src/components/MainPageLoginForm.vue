@@ -61,7 +61,6 @@ export default {
                 username: data.username,
                 password: data.password,
             })
-            console.log(result)
 
             if (result.success) {
                 router.push({ name: 'home' })

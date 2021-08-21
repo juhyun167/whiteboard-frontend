@@ -58,8 +58,18 @@ const register = async (displayName, username, password) => {
     }
 }
 
+const getAllStudy = async () => {
+    try {
+        const response = await axiosInstance.get('/api/study')
+        return handleResponse(response)
+    } catch (error) {
+        return handleError(error)
+    }
+}
+
 export const service = {
     login,
     logout,
     register,
+    getAllStudy,
 }
