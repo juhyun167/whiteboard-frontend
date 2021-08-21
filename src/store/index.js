@@ -27,9 +27,7 @@ export default createStore({
         },
         async logout({ commit }) {
             const result = await service.logout()
-            if (result.success) {
-                commit('LOG_OUT')
-            }
+            commit('LOG_OUT')
             return result
         },
         async register({ commit }, { displayName, username, password }) {

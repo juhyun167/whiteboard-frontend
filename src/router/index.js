@@ -20,6 +20,10 @@ const routes = [
         path: '/home',
         name: 'home',
         component: HomePage,
+        props: {
+            title: '스터디',
+            helperText: ''
+        },
     }
 ]
 

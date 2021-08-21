@@ -1,0 +1,45 @@
+.form-wrapper
+    width 80%
+
+.p-card
+    border-radius 1.5em
+
+.input-wrapper
+    padding 1em
+    display flex
+    flex-direction column
+    justify-content center
+
+    input,
+    :deep(.p-inputtext)
+        width 100%
+        margin-bottom 1em
+        padding-left .3em
+        padding-bottom .5em
+        border none
+        border-bottom 1px solid #d0d2d9
+        border-radius 0
+        
+        ::placeholder
+            color #d0d2d9
+
+        &:focus
+            box-shadow none
+            border-color black
+
+    .button-submit
+        height 3em
+        display flex
+        align-items center
+        justify-content center
+        margin-top 1em
+        border-radius 2rem
+        background-color black
+        color white
+        font-size 1.15em
+        text-decoration none
+
+        &:hover, &:enabled:focus
+            text-decoration none
+            background-color #62636b
+            cursor pointer

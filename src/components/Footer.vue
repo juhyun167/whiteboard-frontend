@@ -52,7 +52,7 @@ export default {
     display flex
     flex-direction column
     justify-content center
-    background-color #e6e9eb
+    background-color #dce0e3
     color #464653
 
 .text-wrapper

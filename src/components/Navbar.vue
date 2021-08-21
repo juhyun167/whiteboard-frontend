@@ -57,13 +57,12 @@ export default {
                     life: 2000,
                     closable: false
                 })
-                router.push({ name: 'main' })
             } else {
                 let errorMessage = ''
 
                 if (result.status) {
                     if (result.status < 500) {
-                        errorMessage = '잘못된 사용자 정보입니다. 화이트보드에 다시 접속해주세요.'
+                        errorMessage = '세션이 만료되었습니다. 화이트보드에 다시 접속해주세요.'
                     }
                     else {
                         errorMessage = '화이트보드 서버에서 오류가 발생했습니다. 잠시 후 다시 시도해주세요.'
@@ -79,6 +78,7 @@ export default {
                     closable: false
                 })
             }
+            router.push({ name: 'main' })
         }
 
         return {
@@ -106,6 +106,7 @@ export default {
 
         &:hover
             background-color #d0d2d966
+            cursor pointer
 
         &:hover, &:visited
             color black
