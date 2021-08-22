@@ -33,7 +33,11 @@
                     class="col-4">
                     <Card class="shadow-3">
                         <template #header>
-                            <img src="@/assets/images/mock-study-card.jpeg" alt="study-card-image">
+                            <img
+                                class="card-header"
+                                @click.prevent="enrollStudy(study.id)"
+                                src="@/assets/images/mock-study-card.jpeg"
+                                alt="study-card-image">
                         </template>
                         <template #title>
                             {{ study.name }}
@@ -50,6 +54,7 @@
 
 <script>
 import { reactive, computed } from 'vue'
+import { useRouter } from 'vue-router'
 import Toast from 'primevue/toast'
 import { useToast } from 'primevue/usetoast'
 import Card from 'primevue/card'
@@ -89,6 +94,7 @@ export default {
             toNextPage: () => { paginator.thisPage = paginator.nextPage },
         })
 
+        const router = useRouter()
         const toast = useToast()
 
         const getAllStudy = async () => {
@@ -118,11 +124,55 @@ export default {
             }
         }
 
+        const enrollStudy = async (studyId) => {
+            console.log('enrollStudy', studyId)
+            const result = await service.enrollStudy(studyId)
+            if (result.success) {
+                toast.add({ 
+                    severity: 'success',
+                    summary: '수강신청이 완료되었습니다.',
+                    detail: '화면 왼쪽의 메뉴를 통해 스터디 페이지를 방문해보세요!',
+                    life: 2000,
+                    closable: false
+                })
+                router.push({ name: 'home' })
+            } else {
+                let severity = 'error'
+                let errorMessage = ''
+
+                if (result.status) {
+                    if (result.status < 500) {
+                        if (result.status === 400) {
+                            errorMessage = '존재하지 않는 스터디입니다. 버튼을 통해 올바르게 신청해주세요.'
+                        } else if (result.status === 409) {
+                            severity = 'info'
+                            errorMessage = '이미 수강신청한 스터디입니다.'
+                        } else {
+                            errorMessage = '세션이 만료되었습니다. 화이트보드에 다시 접속해주세요.'
+                        }
+                    }
+                    else {
+                        errorMessage = '화이트보드 서버에서 오류가 발생했습니다. 잠시 후 다시 시도해주세요.'
+                    }
+                } else {
+                    errorMessage = '수강신청 요청이 실패했습니다. 인터넷 상태를 확인해주세요.'
+                }
+                toast.add({ 
+                    severity,
+                    summary: '수강신청에 실패했습니다.',
+                    detail: errorMessage,
+                    life: 2000,
+                    closable: false
+                })
+            }
+        }
+
         getAllStudy()
 
         return {
             data,
             paginator,
+            enrollStudy,
         }
     }
 }
@@ -174,11 +224,14 @@ export default {
 .p-card
     border-radius .8em
     
-    img
+    .card-header
         height 12em
         border-radius .8em .8em 0 0
         object-fit cover
         -o-object-fit cover
+        
+        &:hover
+            cursor pointer
 
 .paginator-button-wrapper
     display flex

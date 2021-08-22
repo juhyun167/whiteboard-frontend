@@ -5,6 +5,8 @@ const axiosInstance = axios.create({
     withCredentials: true,
 })
 
+/* Account service */
+
 const handleResponse = (response) => {
     return {
         success: true,
@@ -58,9 +60,25 @@ const register = async (displayName, username, password) => {
     }
 }
 
+
+/* Study service */
+
 const getAllStudy = async () => {
     try {
         const response = await axiosInstance.get('/api/study')
+        return handleResponse(response)
+    } catch (error) {
+        return handleError(error)
+    }
+}
+
+const enrollStudy = async (studyId) => {
+    try {
+        const response = await axiosInstance.post('/api/student', {
+            params: {
+                studyId,
+            }
+        })
         return handleResponse(response)
     } catch (error) {
         return handleError(error)
@@ -71,5 +89,7 @@ export const service = {
     login,
     logout,
     register,
+
     getAllStudy,
+    enrollStudy,
 }
