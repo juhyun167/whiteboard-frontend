@@ -151,7 +151,7 @@ export default {
     .col-4:first-of-type
         padding-right .8em
 
-    .col-4:last-of-type
+    .col-4:nth-of-type(3)
         padding-left .8em
     
     .col-4:not(first-of-type):not(last-of-type)
