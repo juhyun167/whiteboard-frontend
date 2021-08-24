@@ -17,5 +17,5 @@ This is a development build and requires Node.js runtime. Clone this repository 
 npm install
 
 # run development server
-npm run dev
+npm run serve
 ```

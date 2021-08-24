@@ -63,7 +63,7 @@ const register = async (displayName, username, password) => {
 
 /* Study service */
 
-const getAllStudy = async () => {
+const getAllStudyList = async () => {
     try {
         const response = await axiosInstance.get('/api/study')
         return handleResponse(response)
@@ -88,6 +88,6 @@ export const service = {
     logout,
     register,
 
-    getAllStudy,
+    getAllStudyList,
     enrollStudy,
 }
