@@ -75,9 +75,7 @@ const getAllStudy = async () => {
 const enrollStudy = async (studyId) => {
     try {
         const response = await axiosInstance.post('/api/student', {
-            params: {
-                studyId,
-            }
+            studyId,
         })
         return handleResponse(response)
     } catch (error) {

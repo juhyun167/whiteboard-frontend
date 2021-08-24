@@ -145,7 +145,7 @@ export default {
                         if (result.status === 400) {
                             errorMessage = '존재하지 않는 스터디입니다. 버튼을 통해 올바르게 신청해주세요.'
                         } else if (result.status === 409) {
-                            severity = 'info'
+                            severity = 'warning'
                             errorMessage = '이미 수강신청한 스터디입니다.'
                         } else {
                             errorMessage = '세션이 만료되었습니다. 화이트보드에 다시 접속해주세요.'
