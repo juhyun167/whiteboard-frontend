@@ -62,7 +62,7 @@ export default {
             .subtitle
                 margin-top .5em
                 font-size 2.4vw
-                font-color #62636b
+                color #62636b
 
     .col:nth-of-type(2)
         img
