@@ -97,7 +97,7 @@ export default {
         const router = useRouter()
         const toast = useToast()
 
-        const getAllStudy = async () => {
+        const getAllStudyList = async () => {
             const result = await service.getAllStudyList()
             if (result.success) {
                 data.studyList = result.data
@@ -125,7 +125,6 @@ export default {
         }
 
         const enrollStudy = async (studyId) => {
-            console.log('enrollStudy', studyId)
             const result = await service.enrollStudy(studyId)
             if (result.success) {
                 toast.add({ 
@@ -167,7 +166,7 @@ export default {
             }
         }
 
-        getAllStudy()
+        getAllStudyList()
 
         return {
             data,

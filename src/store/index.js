@@ -5,23 +5,30 @@ import { service } from '@/service/service'
 export default createStore({
     state: {
         authenticated: false,
-        displayName: '',
+        user: {
+            uid: undefined,
+            displayName: '',
+        }
     },
     mutations: {
         LOG_IN(state, payload) {
             state.authenticated = true
-            state.displayName = payload.displayName
+            state.user.uid = payload.uid
+            state.user.displayName = payload.displayName
         },
         LOG_OUT(state) {
             state.authenticated = false
-            state.displayName = ''
+            state.user = {}
         }
     },
     actions: {
         async login({ commit }, { username, password }) {
             const result = await service.login(username, password)
             if (result.success) {
-                commit('LOG_IN', { displayName: result.data.displayName })
+                commit('LOG_IN', {
+                    uid: result.data.uid,
+                    displayName: result.data.displayName,
+                })
             }
             return result
         },
@@ -38,5 +45,5 @@ export default createStore({
     },
     plugins: [
         createPersistedState(),
-    ]
+    ],
 })

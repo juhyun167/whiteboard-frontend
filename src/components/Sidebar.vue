@@ -1,9 +1,11 @@
 <template>
+    <Toast />
+
     <div class="sidebar-wrapper">
         <div class="sidebar-title">
             수강 목록
         </div>
-        <Tree :value="data.studies">
+        <Tree v-if="data.myStudyList.length" :value="data.myStudyList">
             <template #default="slotProps">
                 <b>{{ slotProps.node.label }}</b>
             </template>
@@ -11,38 +13,77 @@
                 <a :href="slotProps.node.data">{{ slotProps.node.label }}</a>
             </template>
         </Tree>
+        <div v-else class="my-study-list-absent">
+            수강 중인 스터디가 없습니다.
+        </div>
     </div>
 </template>
 
 <script>
 import { reactive } from 'vue'
+import { useStore } from 'vuex'
 import Tree from 'primevue/tree'
+import Toast from 'primevue/toast'
+import { useToast } from 'primevue/usetoast'
+import { service } from '@/service/service'
 
 export default {
     components: {
         Tree,
+        Toast,
     },
     setup() {
         const data = reactive({
-            studies: [
-                {
-                    key: '0',
-                    label: '기계학습',
-                    children: [
-                        { key: '0-0', label: '공지사항', data: '#', type: 'url' },
-                        { key: '0-1', label: '자유게시판', data: '#', type: 'url' },
-                    ]
-                },
-                {
-                    key: '1',
-                    label: '독일의대안문화',
-                    children: [
-                        { key: '1-0', label: '공지사항', data: '#', type: 'url' },
-                        { key: '1-1', label: '자유게시판', data: '#', type: 'url' },
-                    ]
-                },
-            ]
+            myStudyList: [],
         })
+
+        const store = useStore()
+        const toast = useToast()
+
+        const getMyStudyList = async () => {
+            const result = await service.getMyStudyList(store.state.user.uid)
+            console.log(result)
+            if (result.success) {
+                for (let study of result.data) {
+                    let studyObject = {
+                        key: study.id,
+                        label: study.name,
+                        children: [],
+                    }
+                    for (let board of study.boards) {
+                        studyObject.children.push({
+                            key: `${study.id}-${board.id}`,
+                            label: board.name,
+                            data: `/home/board/${board.id}`,
+                            type: 'url',
+                        })
+                    }
+                    data.myStudyList.push(studyObject)
+                }
+            } else {
+                let errorMessage = ''
+
+                if (result.status) {
+                    if (result.status < 500) {
+                        errorMessage = '세션이 만료되었습니다. 화이트보드에 다시 접속해주세요.'
+                    }
+                    else {
+                        errorMessage = '화이트보드 서버에서 오류가 발생했습니다. 잠시 후 다시 시도해주세요.'
+                    }
+                } else {
+                    errorMessage = '수강 중인 스터디 목록을 가져오지 못했습니다. 인터넷 상태를 확인해주세요.'
+                }
+                toast.add({ 
+                    severity: 'error',
+                    summary: '요청이 실패했습니다.',
+                    detail: errorMessage,
+                    life: 2000,
+                    closable: false
+                })
+            }
+        }
+
+        getMyStudyList()
 
         return {
             data,
@@ -106,5 +147,8 @@ export default {
 :deep(.p-treenode-leaf)
     button
         width 1rem !important
+
+.my-study-list-absent
+    margin-top .5em
 
 </style>

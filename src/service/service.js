@@ -72,6 +72,19 @@ const getAllStudyList = async () => {
     }
 }
 
+const getMyStudyList = async (uid) => {
+    try {
+        const response = await axiosInstance.get('/api/student', {
+            params: {
+                userId: uid,
+            }
+        })
+        return handleResponse(response)
+    } catch (error) {
+        return handleError(error)
+    }
+}
+
 const enrollStudy = async (studyId) => {
     try {
         const response = await axiosInstance.post('/api/student', {
@@ -89,5 +102,6 @@ export const service = {
     register,
 
     getAllStudyList,
+    getMyStudyList,
     enrollStudy,
 }
