@@ -10,7 +10,10 @@
                 <b>{{ slotProps.node.label }}</b>
             </template>
             <template #url="slotProps">
-                <a :href="slotProps.node.data">{{ slotProps.node.label }}</a>
+                <div v-if="slotProps.node.key.includes('no-boards')" class="no-boards">
+                    {{ slotProps.node.label }}
+                </div>
+                <a v-else :href="slotProps.node.data">{{ slotProps.node.label }}</a>
             </template>
         </Tree>
         <div v-else class="my-study-list-absent">
@@ -21,6 +24,7 @@
 
 <script>
 import { reactive } from 'vue'
+import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
 import Tree from 'primevue/tree'
 import Toast from 'primevue/toast'
@@ -37,6 +41,7 @@ export default {
             myStudyList: [],
         })
 
+        const router = useRouter()
         const store = useStore()
         const toast = useToast()
 
@@ -50,16 +55,26 @@ export default {
                         label: study.name,
                         children: [],
                     }
-                    for (let board of study.boards) {
+                    if (study.boards.length) {
+                        for (let board of study.boards) {
+                            studyObject.children.push({
+                                key: `${study.id}-${board.id}`,
+                                label: board.name,
+                                data: `/home/board/${board.id}`,
+                                type: 'url',
+                            })
+                        }
+                    } else {
                         studyObject.children.push({
-                            key: `${study.id}-${board.id}`,
-                            label: board.name,
-                            data: `/home/board/${board.id}`,
+                            key: `${study.id}-no-boards`,
+                            label: '게시판이 없습니다',
+                            data: '',
                             type: 'url',
                         })
                     }
                     data.myStudyList.push(studyObject)
                 }
+                router.push({ name: 'home' })
             } else {
                 let errorMessage = ''
 
@@ -150,5 +165,8 @@ export default {
 
 .my-study-list-absent
     margin-top .5em
+
+.no-boards
+    color #464653c0
 
 </style>

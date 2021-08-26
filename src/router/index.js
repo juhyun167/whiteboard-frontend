@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import MainPage from '../views/MainPage.vue'
 import HomePage from '../views/HomePage.vue'
+import AllStudyList from '../components/AllStudyList.vue'
 import store from '../store'
 
 const routes = [
@@ -8,23 +9,25 @@ const routes = [
         path: '/',
         name: 'main',
         component: MainPage,
-        props: { currentForm: 'MainPageLoginForm' }
+        props: { currentForm: 'MainPageLoginForm' },
     },
     {
         path: '/',
         name: 'signup',
         component: MainPage,
-        props: { currentForm: 'MainPageSignupForm' }
+        props: { currentForm: 'MainPageSignupForm' },
     },
     {
         path: '/home',
-        name: 'home',
         component: HomePage,
-        props: {
-            title: '스터디',
-            helperText: ''
-        },
-    }
+        children: [
+            {
+                path: '',
+                name: 'home',
+                component: AllStudyList,
+            },
+        ],
+    },
 ]
 
 const router = createRouter({

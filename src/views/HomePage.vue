@@ -4,19 +4,30 @@
             <Sidebar />
         </div>
         <div class="homepage-content col">
-            <AllStudyList />
+            <router-view></router-view>
         </div>
     </div>
 </template>
 
 <script>
+import { ref } from 'vue'
 import Sidebar from '@/components/Sidebar.vue'
-import AllStudyList from '@/components/AllStudyList.vue'
 
 export default {
     components: {
         Sidebar,
-        AllStudyList,
+    },
+    setup() {
+        const componentKey = ref(0)
+
+        const forceReloadSidebar = () => {
+            componentKey.value++
+        }
+
+        return {
+            componentKey,
+            forceReloadSidebar,
+        }
     }
 }
 </script>
