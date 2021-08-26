@@ -41,6 +41,7 @@
                         </template>
                         <template #title>
                             {{ study.name }}
+                            <span v-if="study.isStudent" class="enrolled">수강중</span>
                         </template>
                         <template #subtitle>
                             이찬영
@@ -251,5 +252,14 @@ export default {
 
     .paginator-button:last-of-type
         margin-left 1em
+
+.enrolled
+    margin-left .1em
+    padding .3em .5em .3em .5em
+    border-radius 2rem
+    background-color #5b8767
+    font-size .6em
+    font-weight 600
+    color white
 
 </style>
