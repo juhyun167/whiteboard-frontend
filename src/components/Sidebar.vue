@@ -47,7 +47,6 @@ export default {
 
         const getMyStudyList = async () => {
             const result = await service.getMyStudyList(store.state.user.uid)
-            console.log(result)
             if (result.success) {
                 for (let study of result.data) {
                     let studyObject = {

@@ -1,10 +1,10 @@
 <template>
     <div class="grid">
         <div class="sidebar col-fixed">
-            <Sidebar />
+            <Sidebar :key="componentKey" />
         </div>
         <div class="homepage-content col">
-            <router-view></router-view>
+            <router-view @reload-sidebar="onReloadSidebar()"></router-view>
         </div>
     </div>
 </template>
@@ -20,13 +20,13 @@ export default {
     setup() {
         const componentKey = ref(0)
 
-        const forceReloadSidebar = () => {
+        const onReloadSidebar = () => {
             componentKey.value++
         }
 
         return {
             componentKey,
-            forceReloadSidebar,
+            onReloadSidebar,
         }
     }
 }

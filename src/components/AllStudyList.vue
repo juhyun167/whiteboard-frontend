@@ -54,7 +54,6 @@
 
 <script>
 import { reactive, computed } from 'vue'
-import { useRouter } from 'vue-router'
 import Toast from 'primevue/toast'
 import { useToast } from 'primevue/usetoast'
 import Card from 'primevue/card'
@@ -65,7 +64,8 @@ export default {
         Toast,
         Card,
     },
-    setup() {
+    emits: ['reload-sidebar'],
+    setup(props, { emit }) {
         const data = reactive({
             studyList: [],
         })
@@ -94,7 +94,6 @@ export default {
             toNextPage: () => { paginator.thisPage = paginator.nextPage },
         })
 
-        const router = useRouter()
         const toast = useToast()
 
         const getAllStudyList = async () => {
@@ -134,7 +133,7 @@ export default {
                     life: 2000,
                     closable: false
                 })
-                router.push({ name: 'home' })
+                emit('reload-sidebar')
             } else {
                 let severity = 'error'
                 let errorMessage = ''
