@@ -41,6 +41,10 @@ html, body {
     -moz-osx-font-smoothing: grayscale;
 }
 
+.navbar {
+    z-index: 100;
+}
+
 .content {
     flex: auto;
 }
