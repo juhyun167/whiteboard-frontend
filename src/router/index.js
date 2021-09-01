@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import MainPage from '../views/MainPage.vue'
 import HomePage from '../views/HomePage.vue'
 import AllStudyList from '../components/AllStudyList.vue'
+import Board from '../components/Board.vue'
 import store from '../store'
 
 const routes = [
@@ -25,6 +26,11 @@ const routes = [
                 path: '',
                 name: 'home',
                 component: AllStudyList,
+            },
+            {
+                path: 'board/:boardId',
+                name: 'board',
+                component: Board,
             },
         ],
     },
