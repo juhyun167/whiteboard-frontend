@@ -41,10 +41,13 @@
                         </template>
                         <template #title>
                             {{ study.name }}
-                            <span v-if="study.isStudent" class="enrolled">수강중</span>
+                            <Tag v-if="study.isTeacher" class="status status-teacher">교육중</Tag>
+                            <Tag v-if="study.isStudent" class="status status-student">수강중</Tag>
                         </template>
-                        <template #subtitle>
-                            이찬영
+                        <template #content>
+                            <div class="card-content">
+                                {{ study.description }}
+                            </div>
                         </template>
                     </Card>
                 </div>
@@ -59,11 +62,13 @@ import Toast from 'primevue/toast'
 import { useToast } from 'primevue/usetoast'
 import Card from 'primevue/card'
 import { service } from '@/service/service'
+import Tag from 'primevue/tag'
 
 export default {
     components: {
         Toast,
         Card,
+        Tag,
     },
     emits: ['reload-sidebar'],
     setup(props, { emit }) {
@@ -232,6 +237,20 @@ export default {
         &:hover
             cursor pointer
 
+.status
+    margin 0 0.3em
+    font-size .6em
+    font-weight 600
+.status-teacher
+    background-color #333365
+.status-student
+    background-color #ff993b
+
+.p-card-content
+    .card-content
+        height 4em
+        overflow-y scroll
+
 .paginator-button-wrapper
     display flex
     flex-direction row
@@ -252,14 +271,5 @@ export default {
 
     .paginator-button:last-of-type
         margin-left 1em
-
-.enrolled
-    margin-left .1em
-    padding .3em .5em .3em .5em
-    border-radius 2rem
-    background-color #5b8767
-    font-size .6em
-    font-weight 600
-    color white
 
 </style>
