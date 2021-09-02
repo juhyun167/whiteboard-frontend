@@ -73,7 +73,6 @@ export default {
                     }
                     data.myStudyList.push(studyObject)
                 }
-                router.push({ name: 'home' })
             } else {
                 let errorMessage = ''
 

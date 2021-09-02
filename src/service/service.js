@@ -96,6 +96,20 @@ const enrollStudy = async (studyId) => {
     }
 }
 
+const unrollStudy = async (studyId, uid) => {
+    try {
+        const response = await axiosInstance.delete('/api/student', {
+            data: {
+                studyId,
+                userId: uid,
+            }
+        })
+        return handleResponse(response)
+    } catch (error) {
+        return handleError(error)
+    }
+}
+
 export const service = {
     login,
     logout,
@@ -104,4 +118,5 @@ export const service = {
     getAllStudyList,
     getMyStudyList,
     enrollStudy,
+    unrollStudy,
 }
