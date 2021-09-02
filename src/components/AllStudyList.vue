@@ -35,19 +35,17 @@
                         <template #header>
                             <img
                                 class="card-header"
-                                @click.prevent="enrollStudy(study.id)"
                                 src="@/assets/images/mock-study-card.jpeg"
                                 alt="study-card-image">
                         </template>
                         <template #title>
-                            {{ study.name }}
+                            <span class="study-name">{{ study.name }}</span>
                             <Tag v-if="study.isTeacher" class="status status-teacher">교육중</Tag>
                             <Tag v-if="study.isStudent" class="status status-student">수강중</Tag>
                         </template>
                         <template #content>
-                            <div class="card-content">
-                                {{ study.description }}
-                            </div>
+                            <Button v-if="!study.isStudent" label="수강 신청" @click.prevent="enrollStudy(study.id)" icon="pi pi-check" class="p-button-enroll" />
+                            <Button v-else label="수강 취소" @click.prevent="unrollStudy(study.id)" icon="pi pi-times" class="p-button-enroll" />
                         </template>
                     </Card>
                 </div>
@@ -58,17 +56,20 @@
 
 <script>
 import { reactive, computed } from 'vue'
+import { useStore } from 'vuex'
 import Toast from 'primevue/toast'
 import { useToast } from 'primevue/usetoast'
 import Card from 'primevue/card'
 import { service } from '@/service/service'
 import Tag from 'primevue/tag'
+import Button from 'primevue/button'
 
 export default {
     components: {
         Toast,
         Card,
         Tag,
+        Button,
     },
     emits: ['reload-sidebar'],
     setup(props, { emit }) {
@@ -100,6 +101,7 @@ export default {
             toNextPage: () => { paginator.thisPage = paginator.nextPage },
         })
 
+        const store = useStore()
         const toast = useToast()
 
         const getAllStudyList = async () => {
@@ -139,7 +141,6 @@ export default {
                     life: 2000,
                     closable: false
                 })
-                emit('reload-sidebar')
             } else {
                 let severity = 'error'
                 let errorMessage = ''
@@ -169,6 +170,51 @@ export default {
                     closable: false
                 })
             }
+            emit('reload-sidebar')
+            getAllStudyList()
+        }
+
+        const unrollStudy = async (studyId) => {
+            const result = await service.unrollStudy(studyId, store.state.user.uid)
+            if (result.success) {
+                toast.add({ 
+                    severity: 'success',
+                    summary: '수강취소가 완료되었습니다.',
+                    detail: '해당 스터디가 수강 목록에서 정상적으로 삭제되었습니다!',
+                    life: 2000,
+                    closable: false
+                })
+            } else {
+                let severity = 'error'
+                let errorMessage = ''
+
+                if (result.status) {
+                    if (result.status < 500) {
+                        if (result.status === 400) {
+                            errorMessage = '존재하지 않는 스터디이거나 존재하지 않는 사용자입니다.'
+                        } else if (result.status === 409) {
+                            severity = 'warn'
+                            errorMessage = '이미 수강취소한 스터디입니다.'
+                        } else {
+                            errorMessage = '세션이 만료되었습니다. 화이트보드에 다시 접속해주세요.'
+                        }
+                    }
+                    else {
+                        errorMessage = '화이트보드 서버에서 오류가 발생했습니다. 잠시 후 다시 시도해주세요.'
+                    }
+                } else {
+                    errorMessage = '수강취소 요청이 실패했습니다. 인터넷 상태를 확인해주세요.'
+                }
+                toast.add({ 
+                    severity,
+                    summary: '수강취소에 실패했습니다.',
+                    detail: errorMessage,
+                    life: 2000,
+                    closable: false
+                })
+            }
+            emit('reload-sidebar')
+            getAllStudyList()
         }
 
         getAllStudyList()
@@ -177,6 +223,7 @@ export default {
             data,
             paginator,
             enrollStudy,
+            unrollStudy,
         }
     }
 }
@@ -236,6 +283,11 @@ export default {
         
         &:hover
             cursor pointer
+    
+    .p-card-content
+        .p-button
+            width 100%
+            background-color #78a6a4
 
 .status
     margin 0 0.3em
@@ -245,11 +297,6 @@ export default {
     background-color #333365
 .status-student
     background-color #ff993b
-
-.p-card-content
-    .card-content
-        height 4em
-        overflow-y scroll
 
 .paginator-button-wrapper
     display flex
@@ -271,5 +318,4 @@ export default {
 
     .paginator-button:last-of-type
         margin-left 1em
-
 </style>
