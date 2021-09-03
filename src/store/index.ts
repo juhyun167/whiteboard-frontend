@@ -1,6 +1,6 @@
 import { createStore } from "vuex";
 import createPersistedState from "vuex-persistedstate";
-import { service } from "@/service/service";
+import { service } from "../service/service";
 
 export default createStore({
   state: {
@@ -18,7 +18,8 @@ export default createStore({
     },
     LOG_OUT(state) {
       state.authenticated = false;
-      state.user = {};
+      state.user.uid = undefined;
+      state.user.displayName = "";
     },
   },
   actions: {
