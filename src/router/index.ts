@@ -38,7 +38,7 @@ const router = createRouter({
 export default router;
 
 router.beforeEach((to, from, next) => {
-  const publicPaths = [
+  const publicPaths: Array<string> = [
     /* pages such as terms and privacy policies */
   ];
   const guestPaths = ["/"];
