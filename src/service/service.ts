@@ -1,4 +1,11 @@
-import axios from "axios";
+import axios, { AxiosResponse, AxiosError } from "axios";
+
+interface CustomResponse {
+  success: boolean;
+  status: number | undefined;
+  statusText: string | undefined;
+  data: any;
+}
 
 const axiosInstance = axios.create({
   timeout: 1000,
@@ -7,7 +14,7 @@ const axiosInstance = axios.create({
 
 /* Account service */
 
-const handleResponse = (response) => {
+const handleResponse = (response: AxiosResponse): CustomResponse => {
   return {
     success: true,
     status: response.status,
@@ -16,8 +23,13 @@ const handleResponse = (response) => {
   };
 };
 
-const handleError = (error) => {
-  const result = { success: false };
+const handleError = (error: AxiosError): CustomResponse => {
+  const result: CustomResponse = {
+    success: false,
+    status: undefined,
+    statusText: undefined,
+    data: undefined,
+  };
   if (error.response) {
     result.status = error.response.status;
     result.statusText = error.response.statusText;
@@ -26,7 +38,10 @@ const handleError = (error) => {
   return result;
 };
 
-const login = async (username, password) => {
+const login = async (
+  username: string,
+  password: string
+): Promise<CustomResponse> => {
   try {
     const response = await axiosInstance.post("/api/auth/login", {
       username,
@@ -38,7 +53,7 @@ const login = async (username, password) => {
   }
 };
 
-const logout = async () => {
+const logout = async (): Promise<CustomResponse> => {
   try {
     const response = await axiosInstance.post("/api/auth/logout");
     return handleResponse(response);
@@ -47,7 +62,11 @@ const logout = async () => {
   }
 };
 
-const register = async (displayName, username, password) => {
+const register = async (
+  displayName: string,
+  username: string,
+  password: string
+): Promise<CustomResponse> => {
   try {
     const response = await axiosInstance.post("/api/user", {
       displayName,
@@ -62,7 +81,7 @@ const register = async (displayName, username, password) => {
 
 /* Study service */
 
-const getAllStudyList = async () => {
+const getAllStudyList = async (): Promise<CustomResponse> => {
   try {
     const response = await axiosInstance.get("/api/study");
     return handleResponse(response);
@@ -71,7 +90,7 @@ const getAllStudyList = async () => {
   }
 };
 
-const getMyStudyList = async (uid) => {
+const getMyStudyList = async (uid: number): Promise<CustomResponse> => {
   try {
     const response = await axiosInstance.get("/api/student", {
       params: {
@@ -84,7 +103,7 @@ const getMyStudyList = async (uid) => {
   }
 };
 
-const enrollStudy = async (studyId) => {
+const enrollStudy = async (studyId: number): Promise<CustomResponse> => {
   try {
     const response = await axiosInstance.post("/api/student", {
       studyId,
@@ -95,7 +114,10 @@ const enrollStudy = async (studyId) => {
   }
 };
 
-const unrollStudy = async (studyId, uid) => {
+const unrollStudy = async (
+  studyId: number,
+  uid: number
+): Promise<CustomResponse> => {
   try {
     const response = await axiosInstance.delete("/api/student", {
       data: {
