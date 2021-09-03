@@ -1,35 +1,35 @@
 <template>
-    <div class="grid">
-        <div class="sidebar col-fixed">
-            <Sidebar :key="componentKey" />
-        </div>
-        <div class="homepage-content col">
-            <router-view @reload-sidebar="onReloadSidebar()"></router-view>
-        </div>
+  <div class="grid">
+    <div class="sidebar col-fixed">
+      <Sidebar :key="componentKey" />
     </div>
+    <div class="homepage-content col">
+      <router-view @reload-sidebar="onReloadSidebar()"></router-view>
+    </div>
+  </div>
 </template>
 
 <script>
-import { ref } from 'vue'
-import Sidebar from '@/components/Sidebar.vue'
+import { ref } from "vue";
+import Sidebar from "@/components/Sidebar.vue";
 
 export default {
-    components: {
-        Sidebar,
-    },
-    setup() {
-        const componentKey = ref(0)
+  components: {
+    Sidebar,
+  },
+  setup() {
+    const componentKey = ref(0);
 
-        const onReloadSidebar = () => {
-            componentKey.value++
-        }
+    const onReloadSidebar = () => {
+      componentKey.value++;
+    };
 
-        return {
-            componentKey,
-            onReloadSidebar,
-        }
-    }
-}
+    return {
+      componentKey,
+      onReloadSidebar,
+    };
+  },
+};
 </script>
 
 <style scoped lang="stylus">
@@ -48,7 +48,7 @@ export default {
 
 .sidebar
     width 250px
-    
+
 .homepage-content
     background-color #dce0e380
     padding-top 2.5em !important

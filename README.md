@@ -14,8 +14,8 @@ This is a development build and requires Node.js runtime. Clone this repository 
 
 ```bash
 # install dependencies
-npm install
+yarn install
 
 # run development server
-npm run serve
+yarn serve
 ```
