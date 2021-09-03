@@ -9,15 +9,15 @@
   </div>
 </template>
 
-<script>
-import { ref } from "vue";
-import Sidebar from "@/components/Sidebar.vue";
+<script lang="ts">
+import { ref, Ref } from "vue";
+import Sidebar from "../components/Sidebar.vue";
 
 export default {
   components: {
     Sidebar,
   },
-  setup() {
+  setup(): { componentKey: Ref<number>; onReloadSidebar: () => void } {
     const componentKey = ref(0);
 
     const onReloadSidebar = () => {
