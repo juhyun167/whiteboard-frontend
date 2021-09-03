@@ -4,7 +4,7 @@ import router from "./router";
 import store from "./store";
 
 import PrimeVue from "primevue/config";
-import ToastService from "primevue/toastservice";
+import * as ToastService from "primevue/toastservice";
 import Tooltip from "primevue/tooltip";
 
 import "primevue/resources/themes/md-light-indigo/theme.css";
